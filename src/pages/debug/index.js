@@ -29,6 +29,12 @@ const DebugComponent = (props) => {
     });
   };
 
+  const clearConnections = () => {
+    Meteor.call('Connections.removeAll', (err, res) => {
+
+    });
+  };
+
   const goEventList = () => {
     props.navigation.navigate('EventList');
   };
@@ -39,10 +45,8 @@ const DebugComponent = (props) => {
 
   return (
     <View style={GlobalStyles.rootAppContainer}>
-      <ScrollView style={[GlobalStyles.card]}>
-
-  
-        <Text style={GlobalStyles.cardTitle}>  Links  </Text>
+      <ScrollView style={[GlobalStyles.card]} contentContainerStyle={GlobalStyles.contentContainer}>
+        <Text style={GlobalStyles.boldLine}>Links  </Text>
 
         <TouchableOpacity
           style={GlobalStyles.listItemCard}
@@ -58,7 +62,7 @@ const DebugComponent = (props) => {
           <Text> Events  </Text>
         </TouchableOpacity>
         
-        <Text style={GlobalStyles.cardTitle}>  Mysteries  { props.mysteryCount} </Text>
+        <Text style={GlobalStyles.boldLine}>{ props.mysteryCount} Mysteries </Text>
         
         <TouchableOpacity
           style={GlobalStyles.listItemCard}
@@ -72,7 +76,7 @@ const DebugComponent = (props) => {
         >
           <Text> Insert Sample Mystery </Text>
         </TouchableOpacity>
-        <Text style={GlobalStyles.cardTitle}>  Events  { (props.eventCount)} </Text>
+        <Text style={GlobalStyles.boldLine}>{ (props.eventCount)} Events   </Text>
         <TouchableOpacity
           style={GlobalStyles.listItemCard}
           onPress={() => clearEvents()}
@@ -85,6 +89,16 @@ const DebugComponent = (props) => {
         >
           <Text> Insert Sample Event </Text>
         </TouchableOpacity>
+
+        <Text style={GlobalStyles.boldLine}>{ props.connectionCount} Connections </Text>
+        <TouchableOpacity
+          style={GlobalStyles.listItemCard}
+          onPress={() => clearConnections()}
+        >
+          <Text> Clear Connections </Text>
+        </TouchableOpacity>
+
+
       </ScrollView>
     </View>
   );
@@ -93,9 +107,12 @@ const DebugComponent = (props) => {
 const Debug = createContainer(() => {
   Meteor.subscribe('mysteries');
   Meteor.subscribe('events');
+  Meteor.subscribe('connections');
+
   return {
     eventCount: Meteor.collection('events').find().length,
     mysteryCount: Meteor.collection('mysteries').find().length,
+    connectionCount: Meteor.collection('connections').find().length,
   };
 }, DebugComponent);
 

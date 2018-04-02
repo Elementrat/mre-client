@@ -11,7 +11,7 @@ const Objectives = ({character}) => (
         data={character.objectives}
         keyExtractor={x => x._id}
         renderItem={({ item }) =>
-        (<View style={GlobalStyles.listItem}><Text>{item.name}</Text></View>)}
+        (<View style={GlobalStyles.listItemCard}><Text>{item.name}</Text></View>)}
       />
     </View>
   </View>

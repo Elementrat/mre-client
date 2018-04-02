@@ -66,7 +66,7 @@ const EventLobbyComponent = (props) => {
     },
   });
 
-  const attemptJoinEventAsCharacter = (eventID, characterID) =>{
+  const attemptJoinEventAsCharacter = (eventID, characterID) => {
     props.navigation.navigate('Game', { eventID, characterID });
   };
 
@@ -78,21 +78,25 @@ const EventLobbyComponent = (props) => {
         <Text style={GlobalStyles.cardTitle}> {props.event.mysteryData.name} </Text>
 
         <View style={localStyles.characterBox}>
-          <Text style={localStyles.characterBoxTitle}> {`Please choose your character`} </Text>
-          <View style={localStyles.cardBox}>
-            {
-              characters.map(x => (
-                <TouchableOpacity key={x.name} 
-                  onPress={() => attemptJoinEventAsCharacter(props.event._id, x._id)}
+          <Text style={localStyles.characterBoxTitle}> {'Please choose your character'} </Text>
+          <FlatList
+            data={props.event.mysteryData.characters}
+            keyExtractor={keyExtract}
+            renderItem={({ item }) =>
+              (
+                <TouchableOpacity
+                  style={[GlobalStyles.listItemCard]}
+                  onPress={() =>
+                  attemptJoinEventAsCharacter(props.event._id, item._id)}
                 >
-                  <View style={localStyles.miniCard} >
-                    <Image resizeMode="stretch" style={[{ width: 60, height: 60 }, localStyles.miniCardPad]} />
-                    <Text style={[GlobalStyles.centered, localStyles.miniCardText]}> {x.name} </Text>
-                  </View>
+                  <Text>
+                    {item.name}
+                  </Text>
+ 
                 </TouchableOpacity>
-              ))
-            }
-          </View>
+              )
+              }
+          />
         </View>
       </View>
     </View>

@@ -35,7 +35,7 @@ const EventListComponent = (props) => {
 
   return (
     <View style={GlobalStyles.rootAppContainer}>
-      <ScrollView style={[GlobalStyles.card, GlobalStyles.scrollView]} contentContainerStyle={GlobalStyles.contentContainer}>
+      <ScrollView style={[GlobalStyles.card]} contentContainerStyle={GlobalStyles.contentContainer}>
 
         <Text style={GlobalStyles.cardTitle}>Events</Text>
        

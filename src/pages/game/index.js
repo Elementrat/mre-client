@@ -67,6 +67,17 @@ class GameComponent extends React.Component {
     this.forceUpdate();
   }
 
+  componentDidMount() {
+    Meteor.call('getConnectionInfo', (err, connectionID) => {
+      Meteor.call('Events.setCharacterOnline', {
+        eventID: this.props.event._id,
+        characterID: this.props.character._id,
+        characterName: this.props.character.name,
+        connectionID,
+      });
+    });
+  }
+
   onNavRequested(pageIndex) {
     // Alert.alert(Object.keys(this.menu).toString());
     // this.viewPager.setPage(1)
@@ -124,7 +135,7 @@ const Game = createContainer((props) => {
 
   const charID = props.navigation.state.params.characterID;
   const character = _.find(event.mysteryData.characters, x => x._id === charID);
-
+  // Tell server we are online
   return {
     event,
     character,

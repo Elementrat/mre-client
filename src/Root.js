@@ -21,8 +21,10 @@ const BLUEWHALE_SERVER_URL = 'ws://172.30.1.21:3000/websocket';
 const MANGWON_COFFEE_SERVER_URL = 'ws://172.30.1.58:3000/websocket';
 const HOLA_SERVER_URL = 'ws://192.168.35.19:3000/websocket';
 const OLAN_SERVER_URL = 'ws://192.168.123.155:3000/websocket';
+const RANDO_MANGWON = 'ws://192.168.25.57:3000/websocket';
+const BOOKTIQUE = 'ws://192.168.35.238:3000/websocket';
 
-const ANDROID_SERVER_URL = HOME_SERVER_URL;
+const ANDROID_SERVER_URL = BOOKTIQUE;
 
 const Stack = StackNavigator(
   {

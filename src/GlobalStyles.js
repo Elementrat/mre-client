@@ -4,6 +4,8 @@ const colors = {
   darkText: 'rgba(10,10,10,255)',
   lightText: 'rgba(230,230,230,255)',
   darkAccent: '#370052',
+  positiveAccent: 'green',
+  negativeAccent: 'black',
   grey: 'rgba(215,215,215,255)',
   lightAccent: 'purple',
   barelyVisibleGrey: 'rgba(0,0,0,.2)',
@@ -31,8 +33,19 @@ const GlobalStyles = StyleSheet.create({
     backgroundColor: colors.darkAccent,
   },
 
-  boldLine: {
+  section: {
     marginBottom: 15,
+  },
+
+  positiveTextColor: {
+    color: colors.positiveAccent,
+  },
+
+  negativeTextColor: {
+    // color: colors.negativeAccent,
+  },
+
+  boldLine: {
     fontWeight: 'bold',
   },
 
@@ -56,11 +69,10 @@ const GlobalStyles = StyleSheet.create({
   },
 
   contentContainer: {
-    paddingBottom: 30,
-    marginBottom: 25,
-    height: '100%',
-    flexGrow: 1,
-    flexShrink: 0,
+    paddingBottom: 50,
+  },
+  contentContainerExtraPad: {
+    paddingBottom: 60,
   },
 
   justifyFlexStart: {
@@ -70,8 +82,13 @@ const GlobalStyles = StyleSheet.create({
   defaultText: {
     fontSize: 20,
   },
+
   marginBottom: {
     marginBottom: 15,
+  },
+
+  padBottom15: {
+    paddingBottom: 15,
   },
 
   centered: {
@@ -84,6 +101,16 @@ const GlobalStyles = StyleSheet.create({
     borderRadius: 5,
     borderColor: colors.barelyVisibleGrey,
     marginBottom: 10,
+  },
+
+  actionBtn: {
+    backgroundColor: 'black',
+    width: '80%',
+    alignSelf: 'center',
+  },
+
+  actionBtnText: {
+    color: 'white',
   },
 
   cardTitle: {
@@ -114,7 +141,6 @@ const GlobalStyles = StyleSheet.create({
   },
 
   listItemCard: {
-    backgroundColor: 'white',
     elevation: 1,
     flex: 1,
     flexGrow: 1,
