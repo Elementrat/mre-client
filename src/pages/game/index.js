@@ -9,6 +9,8 @@ import {
   Modal,
   Alert,
   StyleSheet,
+  Image,
+  Text,
 } from 'react-native';
 
 import GameMenu from './GameMenu';
@@ -19,14 +21,9 @@ import Items from './Items';
 import Character from './Character';
 import Objectives from './Objectives';
 import Knowledge from './Knowledge';
-import AlertModal from './AlertModal';
+import SuperModal from '../../SuperModal';
 
 const localStyles = StyleSheet.create({
-  bold: {
-    fontWeight: 'bold',
-    marginTop: 10,
-  },
-
   viewPager: {
     flex: 0,
     height: '100%',
@@ -45,26 +42,11 @@ class GameComponent extends React.Component {
     this.isHost = this.props.event.hostCharacterID === this.props.character._id;
     this.currentPageIndex = 0;
     this.pages = ['You', 'Objectives', 'Knowledge', 'Items'];
-    this.showModal = false;
+    this.showModal = true;
 
     if (this.isHost) {
       this.pages.unshift('Host');
     }
-  }
-
-  onPageSelected(pageIndex) {
-    this.currentPageIndex = Number(pageIndex);
-    this.forceUpdate(); // TODO Is there a way to eliminate the need for this?
-  }
-
-  onModalTest() {
-    this.showModal = true;
-    this.forceUpdate();
-  }
-
-  onRequestedCloseModal() {
-    this.showModal = false;
-    this.forceUpdate();
   }
 
   componentDidMount() {
@@ -77,6 +59,37 @@ class GameComponent extends React.Component {
       });
     });
   }
+
+  componentWillUnmount() {
+    Meteor.call('getConnectionInfo', (err, connectionID) => {
+      Meteor.call('Events.setCharacterOffline', {
+        eventID: this.props.event._id,
+        characterID: this.props.character._id,
+        characterName: this.props.character.name,
+        connectionID,
+      });
+    });
+  }
+
+  onPageSelected(pageIndex) {
+    this.currentPageIndex = Number(pageIndex);
+    this.forceUpdate(); // TODO Is there a way to eliminate the need for this?
+  }
+
+  onModalTest() {
+    this.showModal = true;
+    this.forceUpdate();
+  }
+
+  onAdvancePhase() {
+
+  }
+
+  onRequestedCloseModal() {
+    this.showModal = false;
+    this.forceUpdate();
+  }
+
 
   onNavRequested(pageIndex) {
     // Alert.alert(Object.keys(this.menu).toString());
@@ -91,8 +104,6 @@ class GameComponent extends React.Component {
     return (
       <View style={{ width: '100%', height: '100%' }}>
 
-        <AlertModal show={this.showModal} onRequestedClose={() => this.onRequestedCloseModal()} />
-
         <ViewPagerAndroid
           style={localStyles.viewPager}
           initialPage={this.currentPageIndex}
@@ -103,6 +114,7 @@ class GameComponent extends React.Component {
               pageKey={key += 1}
               event={this.props.event}
               onTest={() => this.onModalTest()}
+              onAdvancePhase={() => this.props.advancePhase()}
             />
             )}
           <Character pageKey={key += 1} character={this.props.character} />
@@ -113,6 +125,20 @@ class GameComponent extends React.Component {
         </ViewPagerAndroid>
 
         <GameMenu pages={this.pages} currentPageIndex={this.currentPageIndex} />
+        <SuperModal
+          title="Bowser would like to trade"
+          show={this.showModal}
+          btns={[
+          {
+            text: 'Accept',
+            action: () => this.onRequestedCloseModal(),
+          },
+          {
+            text: 'Decline',
+            action: () => this.onRequestedCloseModal(),
+          },
+        ]}
+        />
       </View>
     );
   }
@@ -133,12 +159,17 @@ const Game = createContainer((props) => {
 
   const event = Meteor.collection('events').findOne({ _id: props.navigation.state.params.eventID });
 
+  const advancePhase = () => {
+    Meteor.call('Events.advancePhase', { eventID: event._id });
+  };
+
   const charID = props.navigation.state.params.characterID;
   const character = _.find(event.mysteryData.characters, x => x._id === charID);
   // Tell server we are online
   return {
     event,
     character,
+    advancePhase,
   };
 }, GameComponent);
 

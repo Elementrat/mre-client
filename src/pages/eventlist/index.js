@@ -10,16 +10,13 @@ import {
   Alert,
   ScrollView,
   StyleSheet,
+  Image,
 } from 'react-native';
 
 import { GlobalStyles } from '../../GlobalStyles';
 
 const localStyles = StyleSheet.create({
-  eventCard: {
-    backgroundColor: 'rgb(20,20,20)',
-    color: 'white',
-    marginVertical: 2,
-  },
+
 });
 
 const EventListComponent = (props) => {
@@ -35,39 +32,54 @@ const EventListComponent = (props) => {
 
   return (
     <View style={GlobalStyles.rootAppContainer}>
-      <ScrollView style={[GlobalStyles.card]} contentContainerStyle={GlobalStyles.contentContainer}>
+      <View style={[GlobalStyles.card, GlobalStyles.noPad]}>
+        <View style={[GlobalStyles.cardTitleView]}>
+          <Text style={[GlobalStyles.cardTitle, GlobalStyles.cardPad]}> Events</Text>
+        </View>
 
-        <Text style={GlobalStyles.cardTitle}>Events</Text>
-       
-        <FlatList
-          data={props.events}
-          keyExtractor={keyExtract}
-          renderItem={({ item }) =>
-            (
-              <TouchableOpacity
-                style={[GlobalStyles.listItemCard]}
-                onPress={() =>
-                navToGameLobby(item._id)}
-              >
-                <Text>
-                  {item.mysteryData.name}
-                </Text>
-                <Text>
-                   {item.startDateTime}
-                </Text>
-              </TouchableOpacity>
-            )
-            }
-        />
+        <ScrollView style={[GlobalStyles.cardPad]} contentContainerStyle={GlobalStyles.contentContainer}>
+          <FlatList
+            data={props.events}
+            keyExtractor={keyExtract}
+            renderItem={({ item }) =>
+              (
+                <TouchableOpacity
+                  style={[GlobalStyles.listItemCard, GlobalStyles.bottomAccent]}
+                  onPress={() =>
+                  navToGameLobby(item._id)}
+                >
+                  <View style={GlobalStyles.column}>
+                    <Image
+                      style={{ width: 40, height: 40 }}
+                      source={{ uri: item.mysteryData.thumbnailURI }}
+                    />
+                  </View>
+                  <View style={GlobalStyles.column}>
+                    <Text style={GlobalStyles.boldLine}>
+                      { item.mysteryData.name }
+                    </Text>
+                    <Text>
+                    Hosted by { item.hostUserName }
+                    </Text>
+                  </View>
 
-        <TouchableOpacity
-          style={[GlobalStyles.listItemCard]}
-          onPress={() =>
-          navToDebug()}
-        >
-          <Text>Debug Menu </Text>
-        </TouchableOpacity>
-      </ScrollView>
+                  <Text>
+                    {item.startDateTime}
+                  </Text>
+                </TouchableOpacity>
+              )
+              }
+          />
+
+          <TouchableOpacity
+            style={[GlobalStyles.listItemCard]}
+            onPress={() =>
+            navToDebug()}
+          >
+            <Text>Debug Menu </Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </View>
     </View>
   );
 };

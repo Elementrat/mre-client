@@ -8,48 +8,18 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  ScrollView,
   Alert,
 } from 'react-native';
 
 import { GlobalStyles, colors } from '../../GlobalStyles';
+import CardTitle from '../../CardTitle';
 
 const EventLobbyComponent = (props) => {
   const eventID = props.navigation.state.params.eventID;
   const keyExtract = item => item.name; // TODO add underscore to id
 
   const localStyles = StyleSheet.create({
-    cardBox: {
-      flex: 1,
-      display: 'flex',
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      alignItems: 'flex-start',
-      justifyContent: 'center',
-    },
-
-    miniCard: {
-      width: 100,
-      padding: 15,
-      marginHorizontal: 10,
-      marginBottom: 10,
-      backgroundColor: 'white',
-      elevation: 1,
-      flexWrap: 'nowrap',
-      flexDirection: 'column',
-      justifyContent: 'space-evenly',
-      alignItems: 'center',
-    },
-
-    miniCardPad: {
-      marginBottom: 10,
-    },
-
-    characterBox: {
-      borderColor: colors.barelyVisibleGrey,
-      borderStyle: 'dotted',
-      flex: 1,
-    },
-
     characterBoxTitle: {
       textAlign: 'center',
       flexShrink: 0,
@@ -58,11 +28,6 @@ const EventLobbyComponent = (props) => {
       backgroundColor: colors.darkAccent,
       color: 'white',
       marginBottom: 15,
-    },
-
-    miniCardText: {
-      height: 20,
-      color: 'black',
     },
   });
 
@@ -74,11 +39,11 @@ const EventLobbyComponent = (props) => {
 
   return (
     <View style={GlobalStyles.rootAppContainer}>
-      <View style={[GlobalStyles.card]}>
-        <Text style={GlobalStyles.cardTitle}> {props.event.mysteryData.name} </Text>
+      <View style={[GlobalStyles.card, GlobalStyles.noPad]}>
+        <CardTitle title={props.event.mysteryData.name} />
 
-        <View style={localStyles.characterBox}>
-          <Text style={localStyles.characterBoxTitle}> {'Please choose your character'} </Text>
+        <ScrollView showsVerticalScrollIndicator={false} style={GlobalStyles.cardPad}>
+          <Text style={localStyles.characterBoxTitle}> {'Choose your character'} </Text>
           <FlatList
             data={props.event.mysteryData.characters}
             keyExtractor={keyExtract}
@@ -89,15 +54,20 @@ const EventLobbyComponent = (props) => {
                   onPress={() =>
                   attemptJoinEventAsCharacter(props.event._id, item._id)}
                 >
-                  <Text>
-                    {item.name}
-                  </Text>
- 
+                  <View style={GlobalStyles.column}>
+                    <Image
+                      style={{ width: 40, height: 40, borderRadius: 20 }}
+                      source={{ uri: item.thumbnailURI }}
+                    />
+                  </View>
+                  <View style={GlobalStyles.column}>
+                    <Text style={GlobalStyles.boldLine}>{item.name}</Text>
+                  </View>
                 </TouchableOpacity>
               )
               }
           />
-        </View>
+        </ScrollView>
       </View>
     </View>
   );

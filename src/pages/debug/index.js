@@ -46,59 +46,66 @@ const DebugComponent = (props) => {
   return (
     <View style={GlobalStyles.rootAppContainer}>
       <ScrollView style={[GlobalStyles.card]} contentContainerStyle={GlobalStyles.contentContainer}>
-        <Text style={GlobalStyles.boldLine}>Links  </Text>
-
-        <TouchableOpacity
-          style={GlobalStyles.listItemCard}
-          onPress={() => goMysteryList()}
-        >
-          <Text> Mysteries </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={GlobalStyles.listItemCard}
-          onPress={() => goEventList()}
-        >
-          <Text> Events  </Text>
-        </TouchableOpacity>
         
-        <Text style={GlobalStyles.boldLine}>{ props.mysteryCount} Mysteries </Text>
-        
-        <TouchableOpacity
-          style={GlobalStyles.listItemCard}
-          onPress={() => clearMysteries()}
-        >
-          <Text> Clear Mysteries </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={GlobalStyles.listItemCard}
-          onPress={() => addSampleMystery()}
-        >
-          <Text> Insert Sample Mystery </Text>
-        </TouchableOpacity>
-        <Text style={GlobalStyles.boldLine}>{ (props.eventCount)} Events   </Text>
-        <TouchableOpacity
-          style={GlobalStyles.listItemCard}
-          onPress={() => clearEvents()}
-        >
-          <Text> Clear Events </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={GlobalStyles.listItemCard}
-          onPress={() => addSampleEvent()}
-        >
-          <Text> Insert Sample Event </Text>
-        </TouchableOpacity>
+        <View style={GlobalStyles.section}>
+          <Text style={GlobalStyles.boldLine}>Links  </Text>
+       
+          <TouchableOpacity
+            style={GlobalStyles.listItemCard}
+            onPress={() => goMysteryList()}
+          >
+            <Text> Mysteries </Text>
+          </TouchableOpacity>
 
-        <Text style={GlobalStyles.boldLine}>{ props.connectionCount} Connections </Text>
-        <TouchableOpacity
-          style={GlobalStyles.listItemCard}
-          onPress={() => clearConnections()}
-        >
-          <Text> Clear Connections </Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={GlobalStyles.listItemCard}
+            onPress={() => goEventList()}
+          >
+            <Text> Events  </Text>
+          </TouchableOpacity>
+        </View>
 
+        <View style={GlobalStyles.section}>
+          <Text style={GlobalStyles.boldLine}>{ props.mysteryCount} Mysteries </Text>        
+          <TouchableOpacity
+            style={GlobalStyles.listItemCard}
+            onPress={() => clearMysteries()}
+          >
+            <Text> Clear Mysteries </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={GlobalStyles.listItemCard}
+            onPress={() => addSampleMystery()}
+          >
+            <Text> Insert Sample Mystery </Text>
+          </TouchableOpacity>
+        </View>
 
+        <View style={GlobalStyles.section}>
+          <Text style={GlobalStyles.boldLine}>{ (props.eventCount)} Events   </Text>
+          <TouchableOpacity
+            style={GlobalStyles.listItemCard}
+            onPress={() => clearEvents()}
+          >
+            <Text> Clear Events </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={GlobalStyles.listItemCard}
+            onPress={() => addSampleEvent()}
+          >
+            <Text> Insert Sample Event </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={GlobalStyles.section}>
+          <Text style={GlobalStyles.boldLine}>{ props.connectionCount} Connections </Text>
+          <TouchableOpacity
+            style={GlobalStyles.listItemCard}
+            onPress={() => clearConnections()}
+          >
+            <Text> Clear Connections </Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </View>
   );

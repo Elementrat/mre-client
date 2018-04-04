@@ -8,6 +8,7 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  Image,
   StyleSheet,
 } from 'react-native';
 
@@ -32,29 +33,45 @@ const MysteryDetailsComponent = (props) => {
 
   return (
     <View style={GlobalStyles.rootAppContainer}>
-      <ScrollView style={GlobalStyles.card}>
-        <Text style={GlobalStyles.cardTitle}>{props.mystery.name}</Text>
-        <Text style={GlobalStyles.boldLine}>Summary </Text>
-        <Text style={GlobalStyles.marginBottom}>{props.mystery.summary} </Text>
-        <Text style={GlobalStyles.boldLine}>Characters  </Text>
+      <View style={[GlobalStyles.card, GlobalStyles.noPad]}>
+        <View style={[GlobalStyles.cardTitleView]}>
+          <Text style={[GlobalStyles.cardTitle, GlobalStyles.cardPad]}>{props.mystery.name}</Text>
+        </View>
 
+        <ScrollView showsVerticalScrollIndicator={false} style={GlobalStyles.cardPad}>
+          <View style={GlobalStyles.section}>
+            <Text style={GlobalStyles.boldLine}>Summary </Text>
+            <Text style={GlobalStyles.marginBottom}>{props.mystery.summary} </Text>
+          </View>
 
-        <FlatList style={{flexShrink: 0}}
-          data={props.mystery.characters}
-          keyExtractor={keyExtract}
-          renderItem={({ item }) =>
-            (
-              <View style={GlobalStyles.listItemCard}>
-                <Text style={{width:'100%', fontWeight: 'bold'}}>{item.name} </Text>
-                <Text>{item.summary} </Text>
-              </View>
-            )
-          }
-        />
+          <View style={GlobalStyles.section}>
+            <Text style={GlobalStyles.boldLine}>Characters  </Text>
 
+            <FlatList
+              data={props.mystery.characters}
+              keyExtractor={keyExtract}
+              renderItem={({ item }) =>
+                (
+                  <View style={GlobalStyles.listItem}>
+                    <View style={GlobalStyles.column}>
+                      <Image
+                        style={{ width: 40, height: 40, borderRadius: 20 }}
+                        source={{ uri: item.thumbnailURI }}
+                      />
+                    </View>
+                    <View style={GlobalStyles.column}>
+                      <Text style={GlobalStyles.boldLine}>{item.name} </Text>
+                      <Text>{item.summary} </Text>
+                    </View>
+                  </View>
+                )
+              }
+            />
+          </View>
+          <Text style={localStyles.bold}>Hosting Guide </Text>
+        </ScrollView>
 
-        <Text style={localStyles.bold}>Hosting Guide </Text>
-      </ScrollView>
+      </View>
     </View>
   );
 };

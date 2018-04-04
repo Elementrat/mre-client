@@ -8,6 +8,7 @@ import {
   View,
   TouchableOpacity,
   StyleSheet,
+  Image,
   ScrollView,
 } from 'react-native';
 
@@ -18,7 +19,7 @@ import { GlobalStyles } from '../../GlobalStyles';
 const localStyles = StyleSheet.create({
   centerListitems: {
     flex: 1,
-  }
+  },
 });
 
 const MysteryListComponent = (props) => {
@@ -41,42 +42,55 @@ const MysteryListComponent = (props) => {
 
   return (
     <View style={GlobalStyles.rootAppContainer}>
-      <ScrollView style={[GlobalStyles.card]}>
-        <Text style={GlobalStyles.cardTitle}>Mysteries</Text>
 
-        <FlatList
-          data={props.mysteries}
-          keyExtractor={keyExtract}
-          style={localStyles.centerListitems}
-          renderItem={({ item }) =>
-            (
-              <TouchableOpacity
-                style={[GlobalStyles.listItemCard]}
-                onPress={() =>
-                navToMysteryDetails(item._id)}
-              >
-                <Text > {item.name}
-                </Text>
-                <Text>
-                  {item.minPlayers} - {item.maxPlayers} players
-                </Text>
-              </TouchableOpacity>
-            )
-            }
-        />
-        <TouchableOpacity
-          style={[GlobalStyles.listItemCard]}
-          onPress={() =>
-          navToDebug()}
-        >
-          <Text>Debug Menu </Text>
-        </TouchableOpacity>
+      <View style={[GlobalStyles.card, GlobalStyles.noPad]}>
+        <View style={[GlobalStyles.cardTitleView]}>
+          <Text style={[GlobalStyles.cardTitle, GlobalStyles.cardPad]}>Mysteries</Text>
+        </View>
 
-        <EmptyState text={
+        <ScrollView showsVerticalScrollIndicator={false} style={[GlobalStyles.cardPad]}>
+          <FlatList
+            data={props.mysteries}
+            keyExtractor={keyExtract}
+            style={localStyles.centerListitems}
+            renderItem={({ item }) =>
+              (
+                <TouchableOpacity
+                  style={[GlobalStyles.listItemCard, GlobalStyles.bottomAccent]}
+                  onPress={() =>
+                  navToMysteryDetails(item._id)}
+                >
+                  <View style={GlobalStyles.column}>
+                    <Image
+                      style={{ width: 40, height: 40 }}
+                      source={{ uri: item.thumbnailURI }}
+                    />
+                  </View>
+
+                  <View style={GlobalStyles.column}>
+                    <Text style={GlobalStyles.boldLine}>{item.name}</Text>
+                    <Text>
+                      {item.minPlayers} - {item.maxPlayers} players
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              )
+              }
+          />
+          <TouchableOpacity
+            style={[GlobalStyles.listItemCard]}
+            onPress={() =>
+            navToDebug()}
+          >
+            <Text>Debug Menu </Text>
+          </TouchableOpacity>
+
+          <EmptyState text={
           `Make sure to check back.
 We're always adding more!`}
-        />
-      </ScrollView>
+          />
+        </ScrollView>
+      </View>
     </View>
   );
 };

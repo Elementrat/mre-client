@@ -12,13 +12,13 @@ const localStyles = StyleSheet.create({
     flexGrow: 0,
     position: 'absolute',
     flexDirection: 'row',
-    elevation: 4,
     width: '100%',
     backgroundColor: 'white',
     borderColor: colors.barelyVisibleGrey,
     bottom: 0,
     justifyContent: 'center',
     left: 0,
+    zIndex: 1,
   },
 
   menuText: {

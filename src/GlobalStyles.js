@@ -17,6 +17,12 @@ const sizes = {
     medium: 20,
     large: 24,
   },
+  paddings: {
+    none: 0,
+    small: 5,
+    medium: 15,
+    large: 30,
+  }
 };
 
 const GlobalStyles = StyleSheet.create({
@@ -29,10 +35,22 @@ const GlobalStyles = StyleSheet.create({
     flexShrink: 0,
     height: '100%',
     width: '100%',
-    padding: 10,
+    padding: sizes.paddings.small,
     backgroundColor: colors.darkAccent,
   },
 
+  viewPagerPageStyle: {
+    height: '100%',
+    width: '100%',
+    padding: sizes.paddings.small,
+    flexGrow: 0,
+    flexShrink: 0,
+    backgroundColor: colors.darkAccent,
+  },
+
+  lightText: {
+    color: colors.lightText,
+  },
   section: {
     marginBottom: 15,
   },
@@ -41,12 +59,22 @@ const GlobalStyles = StyleSheet.create({
     color: colors.positiveAccent,
   },
 
+  smallPadTop: {
+    paddingTop: sizes.paddings.medium
+  },
+
   negativeTextColor: {
     // color: colors.negativeAccent,
   },
 
   boldLine: {
     fontWeight: 'bold',
+  },
+
+  noPad: {
+    paddingVertical: sizes.paddings.none,
+    paddingHorizontal: sizes.paddings.none,
+    paddingTop: sizes.paddings.none,
   },
 
   card: {
@@ -58,9 +86,27 @@ const GlobalStyles = StyleSheet.create({
     flex: 1,
     flexGrow: 1,
     flexShrink: 0,
-    padding: 20,
+    padding: sizes.paddings.medium,
     borderWidth: 1,
     borderColor: colors.barelyVisibleGrey,
+  },
+
+  cardTitleView: {
+    backgroundColor: 'white',
+    width: '100%',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
+    borderColor: colors.barelyVisibleGrey,
+    elevation: 3,
+  },
+
+  cardPad: {
+    padding: sizes.paddings.medium
+  },
+
+  cardTitle: {
+    fontSize: sizes.text.medium,
   },
 
   scrollView: {
@@ -113,11 +159,6 @@ const GlobalStyles = StyleSheet.create({
     color: 'white',
   },
 
-  cardTitle: {
-    fontSize: sizes.text.medium,
-    marginBottom: 15,
-  },
-
   listItemText: {
     borderColor: colors.barelyVisibleGrey,
   },
@@ -125,19 +166,27 @@ const GlobalStyles = StyleSheet.create({
   listItem: {
     flex: 1,
     paddingVertical: 15,
-    justifyContent: 'space-between',
     flexDirection: 'row',
     borderTopWidth: StyleSheet.hairlineWidth,
     borderColor: colors.barelyVisibleGrey,
   },
 
-  viewPagerPageStyle: {
-    backgroundColor: colors.darkAccent,
-    height: '100%',
+  listItemCardTextLine: {
     width: '100%',
-    padding: 10,
-    flexGrow: 0,
-    flexShrink: 0,
+  },
+
+  bottomAccent: {
+    borderBottomWidth: 4,
+    borderColor: colors.darkAccent,
+  },
+
+  column: {
+    paddingRight: sizes.paddings.medium,
+    flexShrink: 1,
+  },
+
+  spaceBetween: {    
+    justifyContent: 'space-between',
   },
 
   listItemCard: {
@@ -145,13 +194,11 @@ const GlobalStyles = StyleSheet.create({
     flex: 1,
     flexGrow: 1,
     flexShrink: 0,
-    width: '98%',
     flexDirection: 'row',
     padding: 15,
     marginHorizontal: 5,
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
     marginVertical: 5,
+    alignItems: 'center',
 
     borderRadius: 5,
   },
