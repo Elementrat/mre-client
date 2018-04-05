@@ -9,9 +9,13 @@ const Character = ({ character }) => (
     <View style={[GlobalStyles.card, GlobalStyles.noPad]}>
       <CardTitle title={`${character.name}'s story`} />
       <ScrollView showsVerticalScrollIndicator={false} style={GlobalStyles.cardPad}>
-        <Text style={GlobalStyles.boldLine}>{'Who are you?'} </Text>
-        <Text>{character.backstory} </Text>
-        </ScrollView>
+      
+        <View style={GlobalStyles.section}>
+          <Text style={GlobalStyles.boldLine}>{'Who are you?'} </Text>
+          <Text>{character.backstory} </Text>
+        </View>
+
+      </ScrollView>
     </View>
   </View>
 );

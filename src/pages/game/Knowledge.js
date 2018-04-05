@@ -4,14 +4,15 @@ import { GlobalStyles } from '../../GlobalStyles';
 
 import CardTitle from '../../CardTitle';
 
-const Knowledge = ({character}) => (
-  <View style={GlobalStyles.viewPagerPageStyle} key="4">
+const Knowledge = ({character, show}) => {
+  return show && (<View style={GlobalStyles.viewPagerPageStyle} key="4">
     <View style={[GlobalStyles.card, GlobalStyles.noPad]}>
       <CardTitle title={"Knowledge"} />
       
       <ScrollView showsVerticalScrollIndicator={false} style={GlobalStyles.cardPad}>
-
-      <Text style={GlobalStyles.boldLine}>Only YOU know these things. Use them in scheming, bribing, and maintaining your innocence.</Text>
+        <View style={GlobalStyles.section}>
+          <Text style={GlobalStyles.boldLine}>Only YOU know these things. Use them in scheming, bribing, and maintaining your innocence.</Text>
+        </View>
         <FlatList
           data={character.knowledge}
           keyExtractor={x=> x._id}
@@ -20,7 +21,7 @@ const Knowledge = ({character}) => (
         />
       </ScrollView>
     </View>
-  </View>
-);
+  </View>);
+}
 
 export default Knowledge;

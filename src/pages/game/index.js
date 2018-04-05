@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Meteor, { createContainer } from 'react-native-meteor';
+
 import _ from 'lodash';
 
 import {
@@ -10,6 +11,7 @@ import {
   Alert,
   StyleSheet,
   Image,
+  AsyncStorage,
   Text,
 } from 'react-native';
 
@@ -42,7 +44,19 @@ class GameComponent extends React.Component {
     this.isHost = this.props.event.hostCharacterID === this.props.character._id;
     this.currentPageIndex = 0;
     this.pages = ['You', 'Objectives', 'Knowledge', 'Items'];
-    this.showModal = true;
+
+    this.state = {
+      showPhaseModal: false,
+      showTradeModal: false,
+      currentPhase: '',
+      show: {
+        host: false,
+        items: false,
+        knowledge: false,
+        objectives: true,
+        you: true,
+      }
+    };
 
     if (this.isHost) {
       this.pages.unshift('Host');
@@ -58,6 +72,29 @@ class GameComponent extends React.Component {
         connectionID,
       });
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const newPhase = nextProps.event.mysteryData.currentPhaseName;
+    const curPhase = this.state.currentPhase;
+
+    if (newPhase === 'postgame') {
+      this.props.navigation.navigate('Accusation', {
+        mysteryID,
+      });
+    }
+
+    if (newPhase !== curPhase) {
+      if (this.state.currentPhase !== '') {
+        this.setState({
+          showPhaseModal: true,
+        });
+      }
+
+      this.setState({
+        currentPhase: newPhase,
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -76,26 +113,41 @@ class GameComponent extends React.Component {
     this.forceUpdate(); // TODO Is there a way to eliminate the need for this?
   }
 
-  onModalTest() {
-    this.showModal = true;
-    this.forceUpdate();
-  }
-
-  onAdvancePhase() {
-
-  }
-
   onRequestedCloseModal() {
-    this.showModal = false;
+    this.setState({
+      showPhaseModal: false,
+    });
     this.forceUpdate();
   }
-
 
   onNavRequested(pageIndex) {
     // Alert.alert(Object.keys(this.menu).toString());
     // this.viewPager.setPage(1)
     // this.menu.setPage(pageIndex);
-    Alert.alert('sup', pageIndex); // .nativeEvent.target.toString());
+    // Alert.alert('sup', pageIndex); // .nativeEvent.target.toString());
+  }
+
+  getPhaseDescription() {
+    const me = this;
+    const phase = _.find(this.props.event.mysteryData.phases, x => x.name === this.state.currentPhase);
+
+    if (!phase) {
+      return '';
+    }
+
+    return phase.description;
+  }
+
+  atPhase(checkPhaseName) {
+    const { phases } = this.props.event.mysteryData;
+    const currentPhaseName = this.state.currentPhase;
+
+    const indexOfCurrentPhase = _.findIndex(phases, x => x.name === currentPhaseName);
+    const indexOfPhaseToCheck = _.findIndex(phases, x => x.name === checkPhaseName);
+    if (indexOfCurrentPhase >= indexOfPhaseToCheck) {
+      return true;
+    }
+    return false;
   }
 
   render() {
@@ -119,7 +171,7 @@ class GameComponent extends React.Component {
             )}
           <Character pageKey={key += 1} character={this.props.character} />
           <Objectives pageKey={key += 1} character={this.props.character} />
-          <Knowledge pageKey={key += 1} character={this.props.character} />
+          <Knowledge pageKey={key += 1} character={this.props.character} show={this.state.show.knowledge} />
           <Items pageKey={key += 1} currencyName={this.props.event.mysteryData.currencyName} character={this.props.character} />
 
         </ViewPagerAndroid>
@@ -127,7 +179,7 @@ class GameComponent extends React.Component {
         <GameMenu pages={this.pages} currentPageIndex={this.currentPageIndex} />
         <SuperModal
           title="Bowser would like to trade"
-          show={this.showModal}
+          show={this.state.showTradeModal}
           btns={[
           {
             text: 'Accept',
@@ -139,6 +191,20 @@ class GameComponent extends React.Component {
           },
         ]}
         />
+
+        <SuperModal
+          title={`New phase!
+${this.state.currentPhase}`}
+          description={this.getPhaseDescription()}
+          show={this.state.showPhaseModal}
+          btns={[
+          {
+            text: 'Got it',
+            action: () => this.onRequestedCloseModal(),
+          },
+        ]}
+        />
+
       </View>
     );
   }

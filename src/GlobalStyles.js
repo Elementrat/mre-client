@@ -77,6 +77,10 @@ const GlobalStyles = StyleSheet.create({
     paddingTop: sizes.paddings.none,
   },
 
+  padBottomForMenu: {
+    paddingBottom: 45,
+  },
+
   card: {
     backgroundColor: 'white',
     width: '100%',

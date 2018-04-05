@@ -8,6 +8,7 @@ const MenuStyle = {
   borderTopWidth: 1,
   width: '100%',
   backgroundColor: 'white',
+  elevation: 3,
 };
 
 const HorizontalMenu = props => (

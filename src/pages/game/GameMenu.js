@@ -16,14 +16,21 @@ const localStyles = StyleSheet.create({
     backgroundColor: 'white',
     borderColor: colors.barelyVisibleGrey,
     bottom: 0,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     left: 0,
+    elevation: 3,
     zIndex: 1,
+  },
+
+  menuBtn: {
+    paddingHorizontal: 15,
+    flexShrink: 0,
+    flexGrow: 1,
   },
 
   menuText: {
     lineHeight: 50,
-    marginHorizontal: 10,
+    fontSize: 12,
   },
 
   selectedColor: {
@@ -33,12 +40,6 @@ const localStyles = StyleSheet.create({
   nonSelectedColor: {
     color: 'rgba(0,0,0,.2)',
   },
-
-  profileBtn: {
-    width: 50,
-    height: 50,
-  },
-
 });
 
 class GameMenu extends React.Component {
@@ -48,6 +49,7 @@ class GameMenu extends React.Component {
         {
           this.props.pages.map((x, index) => (
             <TouchableOpacity
+              style={localStyles.menuBtn}
               key={x}
               onPress={() => Alert.alert('press')}
             >

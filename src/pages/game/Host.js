@@ -3,14 +3,16 @@ import { View, Text, TouchableOpacity, FlatList, ScrollView, Alert } from 'react
 import PropTypes from 'prop-types';
 
 import { GlobalStyles, colors } from '../../GlobalStyles';
+import CardTitle from '../../CardTitle';
 
-const Host = ({ pageKey, event, onTest, onAdvancePhase }) => {
+const Host = ({
+ pageKey, event, onTest, onAdvancePhase 
+}) => (
+  <View style={GlobalStyles.viewPagerPageStyle} key="1">
+    <View style={[GlobalStyles.card, GlobalStyles.noPad]}>
+      <CardTitle title={"Hosting"} />
 
-  return (
-    <View style={GlobalStyles.viewPagerPageStyle} key="1">
-      <ScrollView style={GlobalStyles.card} contentContainerStyle={GlobalStyles.contentContainerExtraPad}>
-        <Text style={[GlobalStyles.cardTitle, GlobalStyles.centered]}>Host</Text>
-        
+      <ScrollView showsVerticalScrollIndicator={false} style={[GlobalStyles.cardPad, GlobalStyles.padForBottomMenu]}>
         <View style={GlobalStyles.section}>
           <Text style={GlobalStyles.boldLine}>CURRENT PHASE </Text>
           <Text>{event.mysteryData.currentPhaseName} </Text>
@@ -24,13 +26,13 @@ const Host = ({ pageKey, event, onTest, onAdvancePhase }) => {
         <View style={GlobalStyles.section}>
           <Text style={GlobalStyles.boldLine}>GUEST STATUS </Text>
           <FlatList
-            data={event.mysteryData.characters}
-            keyExtractor={x => x._id}
-            renderItem={({ item }) => (
-              <View style={[GlobalStyles.listItemCard, GlobalStyles.spaceBetween]}>
-                <Text>{ item.name} </Text>
-                <Text style={item.online ? GlobalStyles.positiveTextColor : GlobalStyles.negativeTextColor}> {item.online ? 'Online' : 'Offline'} </Text>
-              </View>)}
+          data={event.mysteryData.characters}
+          keyExtractor={x => x._id}
+          renderItem={({ item }) => (
+            <View style={[GlobalStyles.listItemCard, GlobalStyles.spaceBetween]}>
+              <Text>{ item.name} </Text>
+              <Text style={item.online ? GlobalStyles.positiveTextColor : GlobalStyles.negativeTextColor}> {item.online ? 'Online' : 'Offline'} </Text>
+            </View>)}
           />
         </View>
 
@@ -42,8 +44,8 @@ const Host = ({ pageKey, event, onTest, onAdvancePhase }) => {
           <Text style={GlobalStyles.actionBtnText}> Modal </Text>
         </TouchableOpacity>
       </ScrollView>
-    </View>);
-};
+    </View>
+  </View>);
 
 Host.propTypes = {
   event: PropTypes.object,

@@ -43,11 +43,11 @@ const localStyles = StyleSheet.create({
 
   modalTitle: {
     padding: 15,
-    alignSelf: 'flex-start',
   },
 
   modalTitleText: {
     fontSize: 20,
+    textAlign: 'center',
   },
 
   modalBtnText: {
@@ -66,6 +66,8 @@ const SuperModal = props =>
         style={{ width: 100, height: 130 }}
         source={{ uri: 'https://s3-us-west-2.amazonaws.com/elementrat/mystery/bowser.png' }}
       />
+
+      <Text> {props.description} </Text>
 
       <View style={localStyles.modalMenu}>
         {
