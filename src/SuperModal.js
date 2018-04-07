@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Animated } from 'react-native';
 import { GlobalStyle } from './GlobalStyles';
 
 const localStyles = StyleSheet.create({
@@ -50,36 +50,93 @@ const localStyles = StyleSheet.create({
     textAlign: 'center',
   },
 
+  modalDescriptionText: {
+    padding: 20,
+  },
+
   modalBtnText: {
     color: 'white',
   },
 });
 
-const SuperModal = props =>
-  props.show && (<View style={localStyles.superModal}>
-    <View style={localStyles.modalContentArea}>
-      <View style={localStyles.modalTitle}>
-        <Text style={localStyles.modalTitleText}>{props.title} </Text>
-      </View>
+class SuperModal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      visibility: new Animated.Value(0),
+      scale: new Animated.Value(0.8),
+    };
+  }
 
-      <Image
-        style={{ width: 100, height: 130 }}
-        source={{ uri: 'https://s3-us-west-2.amazonaws.com/elementrat/mystery/bowser.png' }}
-      />
+  componentWillReceiveProps(nextProps) {
 
-      <Text> {props.description} </Text>
+    const aniDur = 250;
+    // Animate in
+    if ((!this.props.show && nextProps.show)) {
+      Animated.timing(this.state.visibility, {
+        toValue: 1,
+        duration: aniDur,
+      }).start();
 
-      <View style={localStyles.modalMenu}>
-        {
-        props.btns.map(x => (
-          <TouchableOpacity style={localStyles.modalBtn} key={x.text} onPress={() => x.action()}>
-            <Text style={localStyles.modalBtnText}> {x.text} </Text>
-          </TouchableOpacity>
-        ))
-      }
-      </View>
-    </View>
-  </View>
-  );
+      Animated.timing(this.state.scale, {
+        toValue: 1,
+        duration: aniDur,
+      }).start();
+    }
+
+    if ((this.props.show && !nextProps.show)) {
+      Animated.timing(this.state.visibility, {
+        toValue: 0,
+        duration: aniDur,
+      }).start();
+
+      Animated.timing(this.state.scale, {
+        toValue: 0.8,
+        duration: aniDur,
+      }).start();
+    }
+  }
+
+  render() {
+    return (
+      <Animated.View
+        pointerEvents={this.props.show ? 'auto' : 'none'} 
+        style={[localStyles.superModal,
+        { opacity: this.state.visibility },     
+        ]}
+      >
+        <Animated.View
+          style={[localStyles.modalContentArea,
+          {
+            transform: [
+            { scaleX: this.state.scale },
+            { scaleY: this.state.scale }]
+          }
+        ]}
+        >
+          <View style={localStyles.modalTitle}>
+            <Text style={localStyles.modalTitleText}>{this.props.title} </Text>
+          </View>
+
+          <Image
+            style={{ width: 100, height: 130 }}
+            source={{ uri: 'https://s3-us-west-2.amazonaws.com/elementrat/mystery/bowser.png' }}
+          />
+
+          <Text style={localStyles.modalDescriptionText}>{this.props.description} </Text>
+
+          <View style={localStyles.modalMenu}>
+            {
+            this.props.btns.map(x => (
+              <TouchableOpacity style={localStyles.modalBtn} key={x.text} onPress={() => x.action()}>
+                <Text style={localStyles.modalBtnText}> {x.text} </Text>
+              </TouchableOpacity>
+            ))
+          }
+          </View>
+        </Animated.View>
+      </Animated.View>);
+  }
+}
 
 export default SuperModal;

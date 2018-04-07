@@ -111,6 +111,7 @@ const GlobalStyles = StyleSheet.create({
 
   cardTitle: {
     fontSize: sizes.text.medium,
+    width: '100%',
   },
 
   scrollView: {
@@ -121,8 +122,8 @@ const GlobalStyles = StyleSheet.create({
   contentContainer: {
     paddingBottom: 50,
   },
-  contentContainerExtraPad: {
-    paddingBottom: 60,
+  contentContainerWithMenu: {
+    paddingBottom: 70,
   },
 
   justifyFlexStart: {

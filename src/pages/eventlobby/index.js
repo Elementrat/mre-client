@@ -42,7 +42,7 @@ const EventLobbyComponent = (props) => {
       <View style={[GlobalStyles.card, GlobalStyles.noPad]}>
         <CardTitle title={props.event.mysteryData.name} />
 
-        <ScrollView showsVerticalScrollIndicator={false} style={GlobalStyles.cardPad}>
+        <ScrollView showsVerticalScrollIndicator={false} style={GlobalStyles.cardPad} contentContainerStyle={GlobalStyles.contentContainer}>
           <Text style={localStyles.characterBoxTitle}> {'Choose your character'} </Text>
           <FlatList
             data={props.event.mysteryData.characters}

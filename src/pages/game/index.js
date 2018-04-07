@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Meteor, { createContainer } from 'react-native-meteor';
+import { PagerTabIndicator, IndicatorViewPager, PagerTitleIndicator, PagerDotIndicator } from 'rn-viewpager';
 
 import _ from 'lodash';
 
 import {
-  ViewPagerAndroid,
   View,
   Modal,
   Alert,
@@ -23,15 +23,14 @@ import Items from './Items';
 import Character from './Character';
 import Objectives from './Objectives';
 import Knowledge from './Knowledge';
+import Locked from './Locked';
 import SuperModal from '../../SuperModal';
 
 const localStyles = StyleSheet.create({
   viewPager: {
-    flex: 0,
+    flex: 1,
     height: '100%',
     width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: colors.darkAccent,
   },
 });
@@ -39,28 +38,16 @@ const localStyles = StyleSheet.create({
 class GameComponent extends React.Component {
   constructor(args) {
     super(args);
-
-    this.keyExtract = item => item._id;
-    this.isHost = this.props.event.hostCharacterID === this.props.character._id;
-    this.currentPageIndex = 0;
-    this.pages = ['You', 'Objectives', 'Knowledge', 'Items'];
+    // this.pages = ['You', 'Objectives', 'Knowledge', 'Items'];
 
     this.state = {
       showPhaseModal: false,
       showTradeModal: false,
       currentPhase: '',
-      show: {
-        host: false,
-        items: false,
-        knowledge: false,
-        objectives: true,
-        you: true,
-      }
+      pages: [],
+      currentPageIndex: 0,
+      isHost: this.props.event.hostCharacterID === this.props.character._id,
     };
-
-    if (this.isHost) {
-      this.pages.unshift('Host');
-    }
   }
 
   componentDidMount() {
@@ -77,14 +64,29 @@ class GameComponent extends React.Component {
   componentWillReceiveProps(nextProps) {
     const newPhase = nextProps.event.mysteryData.currentPhaseName;
     const curPhase = this.state.currentPhase;
+    const { phases } = nextProps.event.mysteryData;
 
-    if (newPhase === 'postgame') {
-      this.props.navigation.navigate('Accusation', {
-        mysteryID,
-      });
-    }
+    let newPageList = [];
 
     if (newPhase !== curPhase) {
+      this.setState({ pages: [] });
+
+      if (this.state.isHost) {
+        newPageList = [...newPageList, 'Host'];
+      }
+
+      const indexOfNewStateInPhaseList = _.findIndex(phases, x => x.name === newPhase);
+
+      nextProps.event.mysteryData.phases.map((x, i) => {
+        if (i <= indexOfNewStateInPhaseList) {
+          x.unlocks.map((x) => {
+            newPageList = [...newPageList, x];
+          });
+        }
+      });
+
+      this.setState({ pages: newPageList });
+
       if (this.state.currentPhase !== '') {
         this.setState({
           showPhaseModal: true,
@@ -109,7 +111,7 @@ class GameComponent extends React.Component {
   }
 
   onPageSelected(pageIndex) {
-    this.currentPageIndex = Number(pageIndex);
+    this.setState({ currentPageIndex: Number(pageIndex) });
     this.forceUpdate(); // TODO Is there a way to eliminate the need for this?
   }
 
@@ -129,7 +131,10 @@ class GameComponent extends React.Component {
 
   getPhaseDescription() {
     const me = this;
-    const phase = _.find(this.props.event.mysteryData.phases, x => x.name === this.state.currentPhase);
+    const phase = _.find(
+      this.props.event.mysteryData.phases,
+      x => x.name === this.state.currentPhase
+    );
 
     if (!phase) {
       return '';
@@ -150,33 +155,54 @@ class GameComponent extends React.Component {
     return false;
   }
 
+
   render() {
     let key = 0;
+    const objectivesLocked = !this.state.pages.includes('Objectives');
+    const knowledgeLocked = !this.state.pages.includes('Knowledge');
+    const itemsLocked = !this.state.pages.includes('Items');
 
     return (
       <View style={{ width: '100%', height: '100%' }}>
 
-        <ViewPagerAndroid
+        <IndicatorViewPager
           style={localStyles.viewPager}
           initialPage={this.currentPageIndex}
-          onPageSelected={event => this.onPageSelected(event.nativeEvent.position.toString())}
+          onPageSelected={event => this.onPageSelected(event.position.toString())}
         >
-          { this.isHost &&
-            (<Host
+          { this.state.isHost &&
+            <Host
               pageKey={key += 1}
               event={this.props.event}
               onTest={() => this.onModalTest()}
               onAdvancePhase={() => this.props.advancePhase()}
             />
-            )}
-          <Character pageKey={key += 1} character={this.props.character} />
-          <Objectives pageKey={key += 1} character={this.props.character} />
-          <Knowledge pageKey={key += 1} character={this.props.character} show={this.state.show.knowledge} />
-          <Items pageKey={key += 1} currencyName={this.props.event.mysteryData.currencyName} character={this.props.character} />
+          }
 
-        </ViewPagerAndroid>
+          <Character
+            pageKey={key += 1}
+            character={this.props.character}
+          />
 
-        <GameMenu pages={this.pages} currentPageIndex={this.currentPageIndex} />
+          <Objectives
+            character={this.props.character}
+            locked={objectivesLocked}
+          />
+
+          <Knowledge
+            character={this.props.character}
+            locked={knowledgeLocked}
+          />
+
+          <Items
+            currencyName={this.props.event.mysteryData.currencyName}
+            character={this.props.character}
+            locked={itemsLocked}
+          />
+
+        </IndicatorViewPager>
+
+        <GameMenu pages={this.state.pages} currentPageIndex={this.state.currentPageIndex} />
         <SuperModal
           title="Bowser would like to trade"
           show={this.state.showTradeModal}
@@ -193,8 +219,7 @@ class GameComponent extends React.Component {
         />
 
         <SuperModal
-          title={`New phase!
-${this.state.currentPhase}`}
+          title="Important Announcement"
           description={this.getPhaseDescription()}
           show={this.state.showPhaseModal}
           btns={[

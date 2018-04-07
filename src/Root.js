@@ -25,7 +25,7 @@ const RANDO_MANGWON = 'ws://192.168.25.57:3000/websocket';
 const BOOKTIQUE_5 = 'ws://192.168.35.238:3000/websocket';
 const BOOKTIQUE_2_4 = 'ws://192.168.35.238:3000/websocket';
 const FLATLAND = 'ws://192.168.1.40:3000/websocket';
-const ORANGE = 'ws://192.168.0.24:3000/websocket';
+const ORANGE = 'ws://192.168.0.13:3000/websocket';
 
 const ANDROID_SERVER_URL = ORANGE;
 

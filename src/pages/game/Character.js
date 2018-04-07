@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
-import { GlobalStyles } from '../../GlobalStyles';
+import PropTypes from 'prop-types';
 
+import { GlobalStyles } from '../../GlobalStyles';
 import CardTitle from '../../CardTitle';
 
 const Character = ({ character }) => (
@@ -19,5 +20,13 @@ const Character = ({ character }) => (
     </View>
   </View>
 );
+
+Character.propTypes = {
+  character: PropTypes.object,
+};
+
+Character.defaultProps = {
+  character: null,
+};
 
 export default Character;

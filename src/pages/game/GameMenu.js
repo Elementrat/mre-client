@@ -16,16 +16,16 @@ const localStyles = StyleSheet.create({
     backgroundColor: 'white',
     borderColor: colors.barelyVisibleGrey,
     bottom: 0,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     left: 0,
-    elevation: 3,
+    elevation: 5,
     zIndex: 1,
   },
 
   menuBtn: {
     paddingHorizontal: 15,
     flexShrink: 0,
-    flexGrow: 1,
+    flexGrow: 0,
   },
 
   menuText: {

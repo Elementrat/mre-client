@@ -12,7 +12,11 @@ const Host = ({
     <View style={[GlobalStyles.card, GlobalStyles.noPad]}>
       <CardTitle title={"Hosting"} />
 
-      <ScrollView showsVerticalScrollIndicator={false} style={[GlobalStyles.cardPad, GlobalStyles.padForBottomMenu]}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={[GlobalStyles.cardPad, GlobalStyles.padForBottomMenu]}
+        contentContainerStyle={GlobalStyles.contentContainerWithMenu}
+      >
         <View style={GlobalStyles.section}>
           <Text style={GlobalStyles.boldLine}>CURRENT PHASE </Text>
           <Text>{event.mysteryData.currentPhaseName} </Text>
