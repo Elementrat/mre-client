@@ -79,9 +79,7 @@ class GameComponent extends React.Component {
 
       nextProps.event.mysteryData.phases.map((x, i) => {
         if (i <= indexOfNewStateInPhaseList) {
-          x.unlocks.map((x) => {
-            newPageList = [...newPageList, x];
-          });
+          x.unlocks.map(z => newPageList = [...newPageList, z]);
         }
       });
 
@@ -238,11 +236,13 @@ class GameComponent extends React.Component {
 GameComponent.propTypes = {
   event: PropTypes.object,
   character: PropTypes.object,
+  advancePhase: PropTypes.func,
 };
 
 GameComponent.defaultProps = {
   event: null,
   character: null,
+  advancePhase: null,
 };
 
 const Game = createContainer((props) => {

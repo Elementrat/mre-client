@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, Text, FlatList, ScrollView } from 'react-native';
+import PropTypes from 'prop-types';
+
 import { GlobalStyles } from '../../GlobalStyles';
 
 import CardTitle from '../../CardTitle';
@@ -11,7 +13,8 @@ const Knowledge = ({ character, locked, pageKey }) => (
     {
     locked
     ? <Locked />
-    : <View style={[GlobalStyles.card, GlobalStyles.noPad]}>
+    :
+    <View style={[GlobalStyles.card, GlobalStyles.noPad]}>
       <CardTitle title="Knowledge" />
       <ScrollView showsVerticalScrollIndicator={false} style={GlobalStyles.cardPad}>
         <View style={GlobalStyles.section}>
@@ -28,6 +31,18 @@ const Knowledge = ({ character, locked, pageKey }) => (
   }
   </View>
 );
+
+Knowledge.propTypes = {
+  character: PropTypes.object,
+  pageKey: PropTypes.number,
+  locked: PropTypes.bool,
+};
+
+Knowledge.defaultProps = {
+  character: null,
+  pageKey: 0,
+  locked: PropTypes.bool,
+};
 
 
 export default Knowledge;

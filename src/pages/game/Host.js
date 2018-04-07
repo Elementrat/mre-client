@@ -5,12 +5,11 @@ import PropTypes from 'prop-types';
 import { GlobalStyles, colors } from '../../GlobalStyles';
 import CardTitle from '../../CardTitle';
 
-const Host = ({
- pageKey, event, onTest, onAdvancePhase 
+const Host = ({ pageKey, event, onTest, onAdvancePhase
 }) => (
   <View style={GlobalStyles.viewPagerPageStyle} key="1">
     <View style={[GlobalStyles.card, GlobalStyles.noPad]}>
-      <CardTitle title={"Hosting"} />
+      <CardTitle title="Hosting" />
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -30,13 +29,13 @@ const Host = ({
         <View style={GlobalStyles.section}>
           <Text style={GlobalStyles.boldLine}>GUEST STATUS </Text>
           <FlatList
-          data={event.mysteryData.characters}
-          keyExtractor={x => x._id}
-          renderItem={({ item }) => (
-            <View style={[GlobalStyles.listItemCard, GlobalStyles.spaceBetween]}>
-              <Text>{ item.name} </Text>
-              <Text style={item.online ? GlobalStyles.positiveTextColor : GlobalStyles.negativeTextColor}> {item.online ? 'Online' : 'Offline'} </Text>
-            </View>)}
+            data={event.mysteryData.characters}
+            keyExtractor={x => x._id}
+            renderItem={({ item }) => (
+              <View style={[GlobalStyles.listItemCard, GlobalStyles.spaceBetween]}>
+                <Text>{ item.name} </Text>
+                <Text style={item.online ? GlobalStyles.positiveTextColor : GlobalStyles.negativeTextColor}> {item.online ? 'Online' : 'Offline'} </Text>
+              </View>)}
           />
         </View>
 
@@ -55,11 +54,13 @@ Host.propTypes = {
   event: PropTypes.object,
   onTest: PropTypes.func,
   pageKey: PropTypes.number,
+  onAdvancePhase: PropTypes.func,
 };
 
 Host.defaultProps = {
   event: null,
   onTest: null,
+  onAdvancePhase: null,
   pageKey: 0,
 };
 

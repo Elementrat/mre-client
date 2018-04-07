@@ -1,11 +1,13 @@
 import React from 'react';
 import { View, Text, FlatList, ScrollView } from 'react-native';
+
+import PropTypes from 'prop-types';
 import { GlobalStyles } from '../../GlobalStyles';
 
 import CardTitle from '../../CardTitle';
 import Locked from './Locked';
 
-const Items = ({ character, locked, currencyName }) => {
+const Items = ({ character, locked, pageKey, currencyName }) => {
   const { items } = character;
   items.unshift({ name: currencyName, count: character.currency, _id: 'cur' });
 
@@ -14,7 +16,8 @@ const Items = ({ character, locked, currencyName }) => {
       {
       locked
         ? <Locked />
-        : <View style={[GlobalStyles.card, GlobalStyles.noPad]}>
+        :
+        <View style={[GlobalStyles.card, GlobalStyles.noPad]}>
           <CardTitle title="Items" />
           <ScrollView showsVerticalScrollIndicator={false} style={GlobalStyles.cardPad}>
             <View style={GlobalStyles.section}>
@@ -27,10 +30,25 @@ const Items = ({ character, locked, currencyName }) => {
               (<View style={GlobalStyles.listItemCard}><Text>{item.count} {item.name}</Text></View>)}
             />
           </ScrollView>
-          </View>
+        </View>
       }
     </View>
   );
 };
+
+Items.propTypes = {
+  character: PropTypes.object,
+  pageKey: PropTypes.number,
+  currencyName: PropTypes.string,
+  locked: PropTypes.bool,
+};
+
+Items.defaultProps = {
+  character: null,
+  pageKey: 0,
+  currencyName: 'dollars',
+  locked: PropTypes.bool,
+};
+
 
 export default Items;

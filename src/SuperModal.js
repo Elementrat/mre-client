@@ -1,6 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Animated } from 'react-native';
+import PropTypes from 'prop-types';
+
 import { GlobalStyle } from './GlobalStyles';
+
 
 const localStyles = StyleSheet.create({
   emptyText: {
@@ -69,7 +72,6 @@ class SuperModal extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-
     const aniDur = 250;
     // Animate in
     if ((!this.props.show && nextProps.show)) {
@@ -100,9 +102,9 @@ class SuperModal extends React.Component {
   render() {
     return (
       <Animated.View
-        pointerEvents={this.props.show ? 'auto' : 'none'} 
+        pointerEvents={this.props.show ? 'auto' : 'none'}
         style={[localStyles.superModal,
-        { opacity: this.state.visibility },     
+        { opacity: this.state.visibility },
         ]}
       >
         <Animated.View
@@ -138,5 +140,19 @@ class SuperModal extends React.Component {
       </Animated.View>);
   }
 }
+
+SuperModal.propTypes = {
+  btns: PropTypes.array,
+  title: PropTypes.string,
+  description: PropTypes.string,
+  show: PropTypes.bool,
+};
+
+SuperModal.defaultProps = {
+  btns: [],
+  title: '',
+  description: '',
+  show: true,
+};
 
 export default SuperModal;
