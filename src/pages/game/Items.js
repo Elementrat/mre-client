@@ -12,7 +12,7 @@ const Items = ({ character, locked, pageKey, currencyName }) => {
   items.unshift({ name: currencyName, count: character.currency, _id: 'cur' });
 
   return (
-    <View style={GlobalStyles.viewPagerPageStyle} key="5">
+    <View style={GlobalStyles.viewPagerPageStyle} key={pageKey}>
       {
       locked
         ? <Locked />

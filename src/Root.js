@@ -26,8 +26,9 @@ const BOOKTIQUE_5 = 'ws://192.168.35.238:3000/websocket';
 const BOOKTIQUE_2_4 = 'ws://192.168.35.238:3000/websocket';
 const FLATLAND = 'ws://192.168.1.40:3000/websocket';
 const ORANGE = 'ws://192.168.0.13:3000/websocket';
+const ORANGE_4 = 'ws://192.168.0.56:3000/websocket';
 
-const ANDROID_SERVER_URL = ORANGE;
+const ANDROID_SERVER_URL = BOOKTIQUE_5;
 
 const Stack = StackNavigator(
   {

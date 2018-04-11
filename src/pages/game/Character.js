@@ -5,12 +5,11 @@ import PropTypes from 'prop-types';
 import { GlobalStyles } from '../../GlobalStyles';
 import CardTitle from '../../CardTitle';
 
-const Character = ({ character }) => (
-  <View style={GlobalStyles.viewPagerPageStyle} key="2">
+const Character = ({ character, pageKey }) => (
+  <View style={GlobalStyles.viewPagerPageStyle} key={pageKey}>
     <View style={[GlobalStyles.card, GlobalStyles.noPad]}>
       <CardTitle title={`${character.name}'s story`} />
       <ScrollView showsVerticalScrollIndicator={false} style={GlobalStyles.cardPad}>
-      
         <View style={GlobalStyles.section}>
           <Text style={GlobalStyles.boldLine}>{'Who are you?'} </Text>
           <Text>{character.backstory} </Text>

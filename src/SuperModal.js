@@ -33,6 +33,7 @@ const localStyles = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'space-between',
     alignItems: 'center',
+    elevation: 5,
   },
 
   modalBtn: {
@@ -122,7 +123,8 @@ class SuperModal extends React.Component {
 
           <Image
             style={{ width: 100, height: 130 }}
-            source={{ uri: 'https://s3-us-west-2.amazonaws.com/elementrat/mystery/bowser.png' }}
+            source={{ uri: this.props.iconURI }}
+            resizeMode="contain"
           />
 
           <Text style={localStyles.modalDescriptionText}>{this.props.description} </Text>
@@ -146,6 +148,7 @@ SuperModal.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   show: PropTypes.bool,
+  iconURI: PropTypes.string,
 };
 
 SuperModal.defaultProps = {
@@ -153,6 +156,7 @@ SuperModal.defaultProps = {
   title: '',
   description: '',
   show: true,
+  iconURI: 'https://s3-us-west-2.amazonaws.com/elementrat/mystery/bowser.png',
 };
 
 export default SuperModal;

@@ -4,10 +4,11 @@ import PropTypes from 'prop-types';
 
 import { GlobalStyles, colors } from '../../GlobalStyles';
 import CardTitle from '../../CardTitle';
+import PhaseTimeline from './PhaseTimeline';
 
-const Host = ({ pageKey, event, onTest, onAdvancePhase
+const Host = ({ pageKey, event, onTest, onAdvancePhase, currentPhaseName
 }) => (
-  <View style={GlobalStyles.viewPagerPageStyle} key="1">
+  <View style={GlobalStyles.viewPagerPageStyle} key={pageKey}>
     <View style={[GlobalStyles.card, GlobalStyles.noPad]}>
       <CardTitle title="Hosting" />
 
@@ -18,12 +19,19 @@ const Host = ({ pageKey, event, onTest, onAdvancePhase
       >
         <View style={GlobalStyles.section}>
           <Text style={GlobalStyles.boldLine}>CURRENT PHASE </Text>
-          <Text>{event.mysteryData.currentPhaseName} </Text>
+          <PhaseTimeline phases={event.mysteryData.phases} currentPhaseName={event.mysteryData.currentPhaseName} />
+
         </View>
 
         <View style={GlobalStyles.section}>
           <Text style={GlobalStyles.boldLine}>WHAT TO DO AS HOST </Text>
           <Text>{event.mysteryData.phases[0].guideText} </Text>
+        </View>
+
+        <View style={GlobalStyles.section}>
+          <TouchableOpacity style={[GlobalStyles.listItemCard, GlobalStyles.actionBtn]} onPress={() => onAdvancePhase()}>
+            <Text style={GlobalStyles.actionBtnText}> Advance to next phase</Text>
+          </TouchableOpacity>
         </View>
 
         <View style={GlobalStyles.section}>
@@ -39,13 +47,6 @@ const Host = ({ pageKey, event, onTest, onAdvancePhase
           />
         </View>
 
-        <TouchableOpacity style={[GlobalStyles.listItemCard, GlobalStyles.actionBtn]} onPress={() => onAdvancePhase()}>
-          <Text style={GlobalStyles.actionBtnText}> Advance to next phase</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={[GlobalStyles.listItemCard, GlobalStyles.actionBtn]} onPress={() => onTest()}>
-          <Text style={GlobalStyles.actionBtnText}> Modal </Text>
-        </TouchableOpacity>
       </ScrollView>
     </View>
   </View>);

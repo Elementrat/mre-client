@@ -25,6 +25,7 @@ import Objectives from './Objectives';
 import Knowledge from './Knowledge';
 import Locked from './Locked';
 import SuperModal from '../../SuperModal';
+import AccusationModal from './AccusationModal';
 
 const localStyles = StyleSheet.create({
   viewPager: {
@@ -43,9 +44,11 @@ class GameComponent extends React.Component {
     this.state = {
       showPhaseModal: false,
       showTradeModal: false,
+      showAccusationModal: false,
       currentPhase: '',
       pages: [],
       currentPageIndex: 0,
+      objectiveSets: [],
       isHost: this.props.event.hostCharacterID === this.props.character._id,
     };
   }
@@ -59,6 +62,7 @@ class GameComponent extends React.Component {
         connectionID,
       });
     });
+    this.forceUpdate();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -68,8 +72,9 @@ class GameComponent extends React.Component {
 
     let newPageList = [];
 
-    if (newPhase !== curPhase) {
+    if ((newPhase !== curPhase) || (curPhase === 'Initial Phase')) {
       this.setState({ pages: [] });
+      this.setState({ showPhaseModal: true });
 
       if (this.state.isHost) {
         newPageList = [...newPageList, 'Host'];
@@ -79,22 +84,25 @@ class GameComponent extends React.Component {
 
       nextProps.event.mysteryData.phases.map((x, i) => {
         if (i <= indexOfNewStateInPhaseList) {
-          x.unlocks.map(z => newPageList = [...newPageList, z]);
+          x.unlocks.map((z) => {
+            if (z.pageName) {
+              newPageList = [...newPageList, z.pageName];
+            }
+            if (z.objectiveSets) {
+              this.setState({ objectiveSets: z.objectiveSets });
+            }
+          });
         }
       });
 
       this.setState({ pages: newPageList });
 
-      if (this.state.currentPhase !== '') {
-        this.setState({
-          showPhaseModal: true,
-        });
-      }
-
       this.setState({
         currentPhase: newPhase,
       });
     }
+
+    this.forceUpdate();
   }
 
   componentWillUnmount() {
@@ -113,10 +121,20 @@ class GameComponent extends React.Component {
     this.forceUpdate(); // TODO Is there a way to eliminate the need for this?
   }
 
+  onPageBtnPressed(pageIndex) {
+    if (this.viewpager) {
+      this.viewpager.setPage(pageIndex);
+    }
+  }
+
   onRequestedCloseModal() {
     this.setState({
       showPhaseModal: false,
     });
+
+    if (this.state.currentPhase === 'Accusations') {
+      this.setState({ showAccusationModal: true });
+    }
     this.forceUpdate();
   }
 
@@ -127,7 +145,7 @@ class GameComponent extends React.Component {
     // Alert.alert('sup', pageIndex); // .nativeEvent.target.toString());
   }
 
-  getPhaseDescription() {
+  getPhase() {
     const me = this;
     const phase = _.find(
       this.props.event.mysteryData.phases,
@@ -138,7 +156,7 @@ class GameComponent extends React.Component {
       return '';
     }
 
-    return phase.description;
+    return phase;
   }
 
   atPhase(checkPhaseName) {
@@ -164,6 +182,7 @@ class GameComponent extends React.Component {
       <View style={{ width: '100%', height: '100%' }}>
 
         <IndicatorViewPager
+          ref={(c) => this.viewpager = c}
           style={localStyles.viewPager}
           initialPage={this.currentPageIndex}
           onPageSelected={event => this.onPageSelected(event.position.toString())}
@@ -183,16 +202,20 @@ class GameComponent extends React.Component {
           />
 
           <Objectives
+            pageKey={key += 1}
             character={this.props.character}
             locked={objectivesLocked}
+            objectiveSets={this.state.objectiveSets}
           />
 
           <Knowledge
+            pageKey={key += 1}
             character={this.props.character}
             locked={knowledgeLocked}
           />
 
           <Items
+            pageKey={key += 1}
             currencyName={this.props.event.mysteryData.currencyName}
             character={this.props.character}
             locked={itemsLocked}
@@ -200,7 +223,7 @@ class GameComponent extends React.Component {
 
         </IndicatorViewPager>
 
-        <GameMenu pages={this.state.pages} currentPageIndex={this.state.currentPageIndex} />
+        <GameMenu pages={this.state.pages} onBtnPress={(x) => this.onPageBtnPressed(x)} currentPageIndex={this.state.currentPageIndex} />
         <SuperModal
           title="Bowser would like to trade"
           show={this.state.showTradeModal}
@@ -216,9 +239,16 @@ class GameComponent extends React.Component {
         ]}
         />
 
+        <AccusationModal
+          show={this.state.showAccusationModal}
+          onRequestedClose={() => {}}
+          characters={this.props.event.mysteryData.characters}
+        />
+
         <SuperModal
-          title="Important Announcement"
-          description={this.getPhaseDescription()}
+          title={this.getPhase().name}
+          description={this.getPhase().description}
+          iconURI={this.getPhase().iconURI}
           show={this.state.showPhaseModal}
           btns={[
           {
@@ -227,7 +257,6 @@ class GameComponent extends React.Component {
           },
         ]}
         />
-
       </View>
     );
   }

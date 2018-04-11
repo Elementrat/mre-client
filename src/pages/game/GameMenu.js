@@ -51,7 +51,7 @@ class GameMenu extends React.Component {
             <TouchableOpacity
               style={localStyles.menuBtn}
               key={x}
-              onPress={() => Alert.alert('press')}
+              onPress={() => this.props.onBtnPress(index)}
             >
               <Text style={
                 [

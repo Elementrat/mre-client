@@ -122,6 +122,7 @@ const GlobalStyles = StyleSheet.create({
   contentContainer: {
     paddingBottom: 50,
   },
+
   contentContainerWithMenu: {
     paddingBottom: 70,
   },
@@ -156,7 +157,7 @@ const GlobalStyles = StyleSheet.create({
 
   actionBtn: {
     backgroundColor: 'black',
-    width: '80%',
+    width: '100%',
     alignSelf: 'center',
   },
 
@@ -190,7 +191,7 @@ const GlobalStyles = StyleSheet.create({
     flexShrink: 1,
   },
 
-  spaceBetween: {    
+  spaceBetween: {
     justifyContent: 'space-between',
   },
 

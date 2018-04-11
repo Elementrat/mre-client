@@ -8,7 +8,7 @@ const localStyles = StyleSheet.create({
   }
 });
 
-const AnnouncementModal = ({show, onRequestedClose}) => {
+const AnnouncementModal = ({ show, onRequestedClose }) => {
   return (
     <Modal
       style={localStyles.modal}
